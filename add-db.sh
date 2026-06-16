@@ -61,6 +61,11 @@ REVOKE CONNECT ON DATABASE "${DB}" FROM PUBLIC;
 GRANT ALL PRIVILEGES ON DATABASE "${DB}" TO "${USER}";
 SQL
 
+# 4. pgvector в этой базе (образ pgvector/pgvector содержит расширение).
+docker compose exec -T postgres psql -v ON_ERROR_STOP=1 -U "$SUPER" -d "${DB}" \
+  -c "CREATE EXTENSION IF NOT EXISTS vector;" >/dev/null
+echo "→ расширение vector включено в '${DB}'"
+
 echo
 echo "✓ готово: БД '${DB}', пользователь '${USER}'"
 if [ "$GEN" = 1 ]; then

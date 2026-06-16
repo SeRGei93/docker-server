@@ -19,7 +19,7 @@ services:
   # Общий postgres для проектов. Сидит на приватной сети shared-db (НЕ на edge):
   # порты наружу не публикуем, подключаются только бэкенды, добавленные в shared-db.
   postgres:
-    image: postgres:18-alpine
+    image: pgvector/pgvector:0.8.2-pg18   # postgres 18 + расширение pgvector
     container_name: postgres
     restart: unless-stopped
     environment:
