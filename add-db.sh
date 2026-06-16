@@ -23,7 +23,7 @@ if [ -f .env ]; then
 fi
 
 # postgres должен быть запущен и принимать соединения.
-if ! docker compose exec -T postgres pg_isready -U "$SUPER" >/dev/null 2>&1; then
+if ! docker compose exec -T postgres pg_isready -U "$SUPER" -d postgres >/dev/null 2>&1; then
   echo "✗ postgres не запущен/не отвечает — сначала ./up.sh"; exit 1
 fi
 
