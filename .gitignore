@@ -1,0 +1,16 @@
+# Содержимое papки projects/ здесь не версионируем —
+# каждый проект живёт в собственном репозитории.
+/projects/*
+!/projects/.gitkeep
+
+# Боевой Caddyfile постоянно меняется (add-site.sh) — историю не ведём.
+# Версионируем только шаблон Caddyfile.example.
+/Caddyfile
+
+# Сертификаты и ключи Caddy (bind-mount /data, /config) — НИКОГДА не коммитим.
+/storage/*
+!/storage/.gitkeep
+
+.DS_Store
+*.log
+.idea/

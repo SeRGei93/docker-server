@@ -1,0 +1,21 @@
+services:
+  caddy:
+    image: caddy:2-alpine
+    container_name: caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"          # HTTP/3
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./storage/data:/data        # сертификаты + ключ ACME-аккаунта (НЕ коммитить, НЕ удалять)
+      - ./storage/config:/config    # автосейв конфига Caddy
+      # Раскомментируйте, если статику проекта C отдаёт Caddy (а не бэкенд):
+      # - ./projects/projC/public:/srv/projC:ro
+    networks:
+      - edge
+
+networks:
+  edge:
+    external: true              # сеть создаётся скриптом up.sh, не здесь

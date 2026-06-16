@@ -1,0 +1,36 @@
+{
+	email example@gmail.com
+}
+
+# ─────────────────────────────────────────────────────────────
+# Это ШАБЛОН. Боевой Caddyfile НЕ версионируется (см. .gitignore) —
+# он постоянно дополняется скриптом add-site.sh. up.sh создаёт
+# боевой Caddyfile из этого файла при первом запуске.
+#
+# Поменяйте email выше на свой и добавляйте сайты:
+#   ./add-site.sh example.com my-app:3000
+#
+# Формат блока (если добавляете вручную):
+#
+#   example.com {
+#       reverse_proxy my-app:3000      # цель = container_name бэкенда,
+#   }                                  # порт = порт ВНУТРИ контейнера
+#
+# Опционально — простая отдача статики без кеша (нужен том в compose:
+# ./projects/<name>/public -> /srv/<name>):
+#
+#   example.com {
+#       @assets path /assets/*
+#       handle @assets {
+#           root * /srv/example
+#           header Cache-Control "no-store"
+#           file_server
+#       }
+#       handle {
+#           reverse_proxy my-app:3000
+#       }
+#   }
+#
+# Перечитать без рестарта:
+#   docker compose exec caddy caddy reload --config /etc/caddy/Caddyfile
+# ─────────────────────────────────────────────────────────────
