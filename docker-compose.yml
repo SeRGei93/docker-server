@@ -16,6 +16,29 @@ services:
     networks:
       - edge
 
+  # Общий postgres для проектов. Сидит на приватной сети shared-db (НЕ на edge):
+  # порты наружу не публикуем, подключаются только бэкенды, добавленные в shared-db.
+  postgres:
+    image: postgres:18-alpine
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?задайте POSTGRES_PASSWORD в .env}
+      POSTGRES_DB: ${POSTGRES_DB:-postgres}
+    volumes:
+      # PG18 хранит данные в /var/lib/postgresql/<major>/docker, том = /var/lib/postgresql
+      - ./storage/pg:/var/lib/postgresql        # данные БД (в .gitignore, бэкапить)
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - shared-db
+
 networks:
   edge:
     external: true              # сеть создаётся скриптом up.sh, не здесь
+  shared-db:
+    external: true              # тоже создаётся up.sh

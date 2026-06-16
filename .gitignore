@@ -7,6 +7,9 @@
 # Версионируем только шаблон Caddyfile.example.
 /Caddyfile
 
+# Секреты (пароль postgres и пр.) — версионируем только .env.example.
+/.env
+
 # Сертификаты и ключи Caddy (bind-mount /data, /config) — НИКОГДА не коммитим.
 /storage/*
 !/storage/.gitkeep
